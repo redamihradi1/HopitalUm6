@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.js"></script>
+    <script src="https://kit.fontawesome.com/1095c9c4ed.js" crossorigin="anonymous"></script>
+    <style>
+        myNav{
+            background-color: rgba(38, 166, 154, 0.5);
+        }
+        textColor{
+            color: #26A69A;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm" style="background-color: rgba(188,219,212, 0.3)">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item" style="margin-right: 30px">
+                <a class="nav-link active" th:href="@{/user/index}"><img class="responsive-img" style="width:30px; " src="https://i.postimg.cc/DyrrZJ7j/Logo-Hopital.png" /></a>
+            </li>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('USER')" style="margin-top: 5px">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #000000">
+                    Patients
+                </a>
+                <ul class="dropdown-menu myNav">
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/formPatient}">Nouveau</a></li>
+                    <li><a class="dropdown-item" th:href="@{/user/index}">Chercher</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('USER')"  style="margin-top: 5px" >
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #000000">
+                    Medecins
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/formMedecin}">Nouveau</a></li>
+                    <li><a class="dropdown-item" th:href="@{/user/indexMedecin}">Chercher</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('USER')" style="margin-top: 5px">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #000000">
+                    Personnels
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/formPersonnel}">Nouveau</a></li>
+                    <li><a class="dropdown-item" th:href="@{/user/indexPersonnel}">Chercher</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('USER')" sstyle="margin-top: 5px" style="margin-top: 5px">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #000000">
+                    Dossier medical
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/formDossier}" >Nouveau</a></li>
+                    <li><a class="dropdown-item" th:href="@{/user/indexDossier}">Chercher</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('USER')" sstyle="margin-top: 5px" style="margin-top: 5px">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" style="color: #000000" sec:authorize="hasAuthority('ADMIN')">
+                    Compte
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/registerAdmin}" >Créer un admin</a></li>
+                    <li><a class="dropdown-item" sec:authorize="hasAuthority('ADMIN')" th:href="@{/register}" >Créer un simple utilisateur</a></li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="navbar-nav" sec:authorize="isAuthenticated()">
+                <span sec:authentication="name" style="margin-right: 5px"></span>
+             <a th:href="@{/logout}"><i class="fa-solid fa-arrow-right-from-bracket" style="color: black"></i></a>
+            <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">Login</a>
+        </ul>
+
+    </div>
+</nav>
+
+<section layout:fragment="content1">
+
+</section>
+</body>
+<footer  style="background: rgba(188,219,212, 0.3); position:fixed; bottom:0; width:100%; height: 55px">
+    <div class="text-center" style="padding: 5px">
+        <a
+            class="btn btn-primary btn-floating m-1"
+            style="background-color: #3b5998;"
+            href="#!"
+            role="button"
+    ><i class="fab fa-facebook-f"></i
+    ></a>
+        <a
+                class="btn btn-primary btn-floating m-1"
+                style="background-color: #0082ca;"
+                href="#!"
+                role="button"
+        ><i class="fab fa-linkedin-in"></i
+        ></a>
+        <a
+                class="btn btn-primary btn-floating m-1"
+                style="background-color: #333333;"
+                href="#!"
+                role="button"
+        ><i class="fab fa-github"></i
+        ></a></div>
+</footer>
+</html>

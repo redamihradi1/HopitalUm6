@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+                 layout:decorate="template1"
+                    xmlns:sec="www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Patients</title>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: url(https://img.freepik.com/photos-gratuite/hopital-blur_1203-7972.jpg);
+            background-size: cover;
+        }
+        .container{
+            margin-top: 100px;
+        }
+        .nav-pills{
+            margin-bottom: 10px;
+        }
+        .myBtn{
+            background-color: #26A69A;
+        }
+        .ftSize{
+            font-size: 1.7rem;
+        }
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content1">
+
+    <div class="container" >
+        <div class="card" style="background-color: rgba(188,219,212, 0.3)"/>
+        <div class="card-header ftSize" > Liste des patients  </div>
+        <div class="card-body" style="background-color: rgba(188,219,212, 0.3)">
+            <form method="get" th:action="@{/user/index}">
+                    <label>Key word</label>
+                <input type="text" name="keyword" th:value="${keyword}">
+                <button type="submit" class="btn myBtn">Chercher</button>
+            </form>
+        </div>
+        <table class="table" style="background-color: rgba(188,219,212,0.3)">
+            <thead>
+            <tr>
+                <th>ID medical</th><th>Nom</th><th>Date naissance</th><th>Malade</th><th>Score</th><th>Medecin</th><th></th><th sec:authorize="hasAuthority('ADMIN')">Action</th><th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p:${listPatients}">
+
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.nom}"></td>
+                <td th:text="${p.dateNaissance}"></td>
+                <td th:if="${p.isMalade()} == true ">Oui</td>
+                <td th:if="${p.isMalade()} == false ">Non</td>
+                <td th:text="${p.score}"></td>
+                <td th:if="${p.medecin}!=null" th:text="${p.medecin.getNom()}"></td>
+                <td th:if="${p.medecin}==null">/</td>
+                <td sec:authorize="hasAuthority('ADMIN')">
+                    <a onclick="return confirm('Etes vous sur ? ')" class="btn btn-danger" th:href="@{/admin/delete(id=${p.id},keyword=${keyword} ,page=${currentPage})}">
+                        Supprimer
+                    </a>
+                </td>
+                <td sec:authorize="hasAuthority('ADMIN')">
+                    <a  class="btn btn-success"  th:href="@{/admin/editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}">
+                        Modifier
+                    </a>
+                </td>
+                <td th:if="${p.medecin}==null" sec:authorize="hasAuthority('ADMIN')">
+                    <a  class="btn btn-warning"   th:href="@{/admin/atribuerPatientMedecin(id=${p.id},keyword=${keyword},page=${currentPage})}">
+                        Atribuer a un medecin
+                    </a>
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+        <ul class="nav nav-pills">
+            <li th:each="page,status:${pages}">
+                    <a th:class="${status.index == currentPage ?'btn btn-outline-primary ms-1':'btn  myBtn ms-1'}"
+                       th:text="${status.index }"
+                       th:href="@{/user/index(page=${status.index},keyword=${keyword})}"
+                    class="">
+
+                    </a>
+            </li>
+        </ul>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+</body>
+</html>

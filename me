@@ -1,0 +1,11 @@
+    //@Bean
+    CommandLineRunner saveUsers(SecurityService securityService ){
+        return args -> {
+            securityService.saveNewUser("admin","admin","admin");
+            securityService.saveNewRole("USER","");
+            securityService.saveNewRole("ADMIN","hada ana xD");
+            securityService.addRoleToUSer("admin","ADMIN");
+            securityService.addRoleToUSer("admin","USER");
+        };
+    }
+
